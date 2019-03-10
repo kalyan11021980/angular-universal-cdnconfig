@@ -16,7 +16,7 @@ enableProdMode();
 const dotenv = require('dotenv');
 dotenv.config();
 const config = filterEnv(/(BB_\w+)/, { json: true, freeze: true });
-
+import { ROUTES } from './src/routes';
 const PORT = process.env.BB_PORT || 8000;
 
 // Provide support for window on the server
@@ -82,6 +82,43 @@ app.get('', (req, res) => {
     preboot: true
   });
 });
+
+function getAllRoute(route) {
+  try {
+    app.get(route, (req, res) => {
+      res.render('index', {
+        req,
+        res,
+        preboot:true
+      })
+    })
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function postAllRoute(route) {
+  try {
+    app.get(route, (req, res) => {
+      res.render('index', {
+        req,
+        res,
+        preboot:true
+      })
+    })
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+ROUTES.forEach((route) => {
+  try {
+    getAllRoute(route);
+    postAllRoute(route);
+  } catch (error) {
+    console.log(error);
+  }
+})
 
 app.get('/env', (req, res) => {
   res.json(process.env);
